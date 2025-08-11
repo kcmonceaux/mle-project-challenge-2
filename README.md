@@ -31,25 +31,19 @@ We would like to have the opportunity to review your solution before
 presenting.
 Please add your project to a private GitHub repository and share the
 link with our recruiter.
-If you don’t have a GitHub account, you can create one for
 free at [github.com](https://github.com/).
 
 This project is for the machine learning engineer (MLE) role.
-We recognize there may be many definitions for a machine learning engineer,
 at phData we define this role as follows:
 
 > The MLE works in cooperation with data science teams by providing the
-engineering support for model deployment, monitoring, and retraining.
 The MLE is often not directly involved in the data-discovery and
 model-development process, though it is helpful for MLEs to have proficient
 domain knowledge in this area.
 See
-[this article](https://www.oreilly.com/ideas/data-engineers-vs-data-scientists)
 for more discussion on these various roles.
-
 If you are more interested in another role such as Data Science or Data
 Engineering, please inform your contact you’ve been given the wrong project.
-
 
 ## Project Scenario
 
@@ -72,7 +66,6 @@ The data used to train the model is in the `data` directory, which includes:
 
 - `data/kc_house_data.csv` – Data for training the model.  Each row
 corresponds to a sold home.  `price` is the
-target column, the rest can be used as features if appropriate.
 - `data/zipcode_demographics.csv` – Additional demographic data from the
 U.S. Census which are used as features.  This data should be joined to the
 primary home sales using the `zipcode` column.
@@ -93,6 +86,50 @@ conda activate housing
 ```
 
 Once you've created and activated the environment, you can run the script which
+---
+
+# Running with Docker
+
+1. Make sure Docker Desktop is installed and running on your computer.
+2. Open a terminal and go to your project folder:
+  cd C:\Users\kcmon\anaconda_projects\mle-project-challenge-2
+3. Build the Docker image:
+  docker build -t house-predictor .
+4. Start the Docker container:
+  docker run -p 8000:8000 house-predictor
+5. The API will be available at http://localhost:8000
+
+# Example API Requests
+
+## Predict with full data
+Send a POST request to `/predict` with all required fields:
+```sh
+curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -d @data/future_unseen_examples.json
+```
+
+## Predict with minimal data
+Send a POST request to `/predict-minimal` with only the minimal required fields:
+```sh
+curl -X POST http://localhost:8000/predict-minimal -H "Content-Type: application/json" -d '{"age": 45, "income": 75000, "zipcode": "98101"}'
+```
+
+## Example Response
+You will get a JSON response like:
+```json
+{
+  "prediction": 550000,
+  "metadata": {
+   "age": 45,
+   "income": 75000,
+   "zipcode": "98101",
+   "gender": "female",
+   "education": "bachelor"
+   // ...other demographic info
+  }
+}
+```
+
+---
 creates the model:
 ```sh
 python create_model.py
@@ -179,26 +216,5 @@ If you have any suggestions for this project or our interview process, please
 **give us feedback.**
 Our goal is to make the interview process a positive experience for candidates
 and we are always interested in improving.
-
----
-
-# How to Run This Project
-
-1. Open the Anaconda Prompt on your computer. This is a special window for running commands.
-
-2. Go to the project folder. Type:
-  cd Folder_Path
-
-3. Turn on the project environment. Type:
-  conda activate housing
-
-4. Start the program that lets you ask for house price predictions. Type:
-  uvicorn app:app --reload
-  (Leave this window open while you use the service.)
-
-5. To get a prediction, open another window and use the command below. This sends your house data to the program and gets a price back:
-  curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -d @data/future_unseen_examples.json
-
-6. You will see a result showing the predicted price and some details about the house.
 
 ---
