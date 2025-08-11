@@ -1,0 +1,30 @@
+[
+  {
+    "age": 45,
+    "income": 75000,
+    "zipcode": "98042",
+    "gender": "female",
+    "education": "bachelor"
+  },
+  {
+    "age": 32,
+    "income": 62000,
+    "zipcode": "98178",
+    "gender": "male",
+    "education": "high_school"
+  },
+  {
+    "age": 54,
+    "income": 120000,
+    "zipcode": "98007",
+    "gender": "female",
+    "education": "master"
+  },
+  {
+    "age": 29,
+    "income": 54000,
+    "zipcode": "98040",
+    "gender": "male",
+    "education": "associate"
+  }
+]
