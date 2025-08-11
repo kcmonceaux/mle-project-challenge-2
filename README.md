@@ -1,3 +1,6 @@
+
+
+---
 ![phData Logo](phData.png "phData Logo")
 
 # phData Machine Learning Engineer Candidate Project
@@ -93,11 +96,13 @@ Once you've created and activated the environment, you can run the script which
 1. Make sure Docker Desktop is installed and running on your computer.
 2. Open a terminal and go to your project folder:
   cd C:\Users\kcmon\anaconda_projects\mle-project-challenge-2
-3. Build the Docker image:
-  docker build -t house-predictor .
-4. Start the Docker container:
+3. Make sure Docker Desktop is installed and running.
+4. Open a terminal and go to the folder with `house-predictor.tar`.
+5. Load the image:
+  docker load -i house-predictor.tar
+6. Start the Docker container:
   docker run -p 8000:8000 house-predictor
-5. The API will be available at http://localhost:8000
+7. The API will be available at http://localhost:8000
 
 # Example API Requests
 
