@@ -215,7 +215,7 @@ curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -
 
 # Testing
 
-We tested the API using the following methods:
+I tested the API using the following methods:
 
 1. **Manual Testing with curl**
   - Sent POST requests to the `/predict` endpoint using example data files and direct JSON input.
@@ -234,7 +234,7 @@ We tested the API using the following methods:
 These tests confirm that the API works as expected and handles both valid and invalid input gracefully.
 
 4. **Model Performance Evaluation**
-  - After training the model with `create_model.py`, we evaluated its performance using standard metrics (e.g., RMSE, accuracy) on a holdout set from the training data.
+  - After training the model with `create_model.py`, I evaluated its performance using standard metrics (e.g., RMSE, accuracy) on a holdout set from the training data.
   - The model showed reasonable accuracy and generalization to unseen examples, indicating it is suitable for predicting house prices on new data.
   - For further improvement, cross-validation and more advanced metrics can be used to assess overfitting or underfitting.
 
