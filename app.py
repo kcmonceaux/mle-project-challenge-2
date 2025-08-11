@@ -15,8 +15,14 @@ feature_order = [
     "education",
 ]  # Example feature order
 demographics = pd.read_csv(
-    "data/zipcode_demographics.csv"
-)  # Must have 'zipcode' column
+    "data/zipcode_demographics.csv",
+    dtype=str
+)
+# Strip whitespace from all column names
+demographics.columns = demographics.columns.str.strip()
+# Strip whitespace from all zipcodes
+demographics["zipcode"] = demographics["zipcode"].astype(str).str.strip()
+
 
 
 class InputData(BaseModel):
@@ -27,11 +33,6 @@ class InputData(BaseModel):
     education: str
 
 
-class MinimalInput(BaseModel):
-    age: int
-    income: float
-    zipcode: str
-
 
 def prepare_input(data: dict):
     """Prepare a feature vector for prediction.
@@ -40,8 +41,14 @@ def prepare_input(data: dict):
     exist in the demographics table, the input data is used as-is so that
     predictions can still be made.
     """
-    # Join demographic data and allow missing zipcodes
-    demo_row = demographics[demographics["zipcode"] == data["zipcode"]]
+    # Debug: print loaded zipcodes and incoming zipcode
+    loaded_zipcodes = demographics["zipcode"].astype(str).str.strip().unique()
+    print(f"Loaded zipcodes: {loaded_zipcodes}")
+    input_zip = str(data["zipcode"]).strip()
+    print(f"Incoming zipcode: {input_zip}")
+    demo_row = demographics[demographics["zipcode"].astype(str).str.strip() == input_zip]
+    if demo_row.empty:
+        print(f"Zipcode {input_zip} not found!")
     demo_row = demo_row.iloc[0].to_dict() if not demo_row.empty else {}
     # Merge, letting explicit input values take precedence
     merged = {**demo_row, **data}
@@ -57,15 +64,3 @@ def predict(input: InputData):
     return {"prediction": pred, "metadata": meta}
 
 
-@app.post("/predict-minimal")
-def predict_minimal(input: MinimalInput):
-    # Fill missing features with defaults or demographic data
-    data = input.dict()
-    demo_row = demographics[demographics["zipcode"] == data["zipcode"]]
-    demo_row = demo_row.iloc[0].to_dict() if not demo_row.empty else {}
-    # Fill optional features from demographics when available, otherwise default
-    data["gender"] = demo_row.get("gender", "unknown")
-    data["education"] = demo_row.get("education", "unknown")
-    X, meta = prepare_input(data)
-    pred = model.predict([X])[0]
-    return {"prediction": pred, "metadata": meta}

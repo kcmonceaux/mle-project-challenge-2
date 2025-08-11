@@ -212,22 +212,16 @@ Send a POST request to `/predict` with all required fields:
 curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -d @data/future_unseen_examples.json
 ```
 
-## Predict with minimal data
-Send a POST request to `/predict-minimal` with only the minimal required fields:
-```sh
-curl -X POST http://localhost:8000/predict-minimal -H "Content-Type: application/json" -d '{"age": 45, "income": 75000, "zipcode": "98101"}'
-```
 
 # Testing
 
 We tested the API using the following methods:
 
 1. **Manual Testing with curl**
-  - Sent POST requests to the `/predict` and `/predict-minimal` endpoints using example data files and direct JSON input.
-  - Example commands:
+  - Sent POST requests to the `/predict` endpoint using example data files and direct JSON input.
+  - Example command:
     ```sh
     curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -d @data/future_unseen_examples.json
-    curl -X POST http://localhost:8000/predict-minimal -H "Content-Type: application/json" -d '{"age": 45, "income": 75000, "zipcode": "98101"}'
     ```
 
 2. **Automated Testing with Python Script**
