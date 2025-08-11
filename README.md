@@ -1,5 +1,4 @@
 
-
 ---
 ![phData Logo](phData.png "phData Logo")
 
@@ -89,35 +88,6 @@ conda activate housing
 ```
 
 Once you've created and activated the environment, you can run the script which
----
-
-# Running with Docker
-
-1. Make sure Docker Desktop is installed and running on your computer.
-2. Open a terminal and go to your project folder:
-  cd C:\Users\kcmon\anaconda_projects\mle-project-challenge-2
-3. Make sure Docker Desktop is installed and running.
-4. Open a terminal and go to the folder with `house-predictor.tar`.
-5. Load the image:
-  docker load -i house-predictor.tar
-6. Start the Docker container:
-  docker run -p 8000:8000 house-predictor
-7. The API will be available at http://localhost:8000
-
-# Example API Requests
-
-## Predict with full data
-Send a POST request to `/predict` with all required fields:
-```sh
-curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -d @data/future_unseen_examples.json
-```
-
-## Predict with minimal data
-Send a POST request to `/predict-minimal` with only the minimal required fields:
-```sh
-curl -X POST http://localhost:8000/predict-minimal -H "Content-Type: application/json" -d '{"age": 45, "income": 75000, "zipcode": "98101"}'
-```
-
 ## Example Response
 You will get a JSON response like:
 ```json
@@ -133,8 +103,6 @@ You will get a JSON response like:
   }
 }
 ```
-
----
 creates the model:
 ```sh
 python create_model.py
@@ -221,5 +189,59 @@ If you have any suggestions for this project or our interview process, please
 **give us feedback.**
 Our goal is to make the interview process a positive experience for candidates
 and we are always interested in improving.
+---
+
+# Running with Docker
+
+1. Make sure Docker Desktop is installed and running on your computer.
+2. Open a terminal and go to your project folder:
+  cd C:\Users\kcmon\anaconda_projects\mle-project-challenge-2
+3. Make sure Docker Desktop is installed and running.
+4. Open a terminal and go to the folder with `house-predictor.tar`.
+5. Load the image:
+  docker load -i house-predictor.tar
+6. Start the Docker container:
+  docker run -p 8000:8000 house-predictor
+7. The API will be available at http://localhost:8000
+
+# Example API Requests
+
+## Predict with full data
+Send a POST request to `/predict` with all required fields:
+```sh
+curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -d @data/future_unseen_examples.json
+```
+
+## Predict with minimal data
+Send a POST request to `/predict-minimal` with only the minimal required fields:
+```sh
+curl -X POST http://localhost:8000/predict-minimal -H "Content-Type: application/json" -d '{"age": 45, "income": 75000, "zipcode": "98101"}'
+```
+
+# Testing
+
+We tested the API using the following methods:
+
+1. **Manual Testing with curl**
+  - Sent POST requests to the `/predict` and `/predict-minimal` endpoints using example data files and direct JSON input.
+  - Example commands:
+    ```sh
+    curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -d @data/future_unseen_examples.json
+    curl -X POST http://localhost:8000/predict-minimal -H "Content-Type: application/json" -d '{"age": 45, "income": 75000, "zipcode": "98101"}'
+    ```
+
+2. **Automated Testing with Python Script**
+  - Used the `test_api.py` script to send multiple requests to the API and verify the responses.
+  - This script reads data from `data/future_unseen_examples.csv` and submits it to the API, printing the results for review.
+
+3. **Error Handling**
+  - Tested the API with missing or invalid data (e.g., unknown zipcodes, missing fields) to confirm it returns helpful error messages.
+
+These tests confirm that the API works as expected and handles both valid and invalid input gracefully.
+
+4. **Model Performance Evaluation**
+  - After training the model with `create_model.py`, we evaluated its performance using standard metrics (e.g., RMSE, accuracy) on a holdout set from the training data.
+  - The model showed reasonable accuracy and generalization to unseen examples, indicating it is suitable for predicting house prices on new data.
+  - For further improvement, cross-validation and more advanced metrics can be used to assess overfitting or underfitting.
 
 ---
